@@ -1,0 +1,22 @@
+from nes_py.wrappers import JoypadSpace
+import gym_super_mario_bros
+from gym_super_mario_bros.actions import SIMPLE_MOVEMENT
+from gym.wrappers import RecordVideo
+import datetime
+import pytz
+
+env = gym_super_mario_bros.make('SuperMarioBros-v0')
+# dt_now = datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
+# folder_name = str(dt_now)
+# env = RecordVideo(gym_super_mario_bros.make('SuperMarioBros-v0'),video_folder=folder_name, episode_trigger=lambda x: (x % 10) == 0)
+
+env = JoypadSpace(env, SIMPLE_MOVEMENT)
+
+done = True
+for step in range(5000):
+    if done:
+        state = env.reset()
+    state, reward, done, info = env.step(env.action_space.sample())
+    env.render()
+
+env.close()
